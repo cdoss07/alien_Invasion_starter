@@ -1,6 +1,7 @@
 import sys
 import pygame
 from settings import Settings
+from ship import Ship
 
 class AlienInvasion:
 
@@ -16,6 +17,8 @@ class AlienInvasion:
 
         self.clock = pygame.time.Clock()
 
+        self.ship = Ship(self)
+
     def run_game(self):
         while True:
             for event in pygame.event.get():
@@ -24,6 +27,7 @@ class AlienInvasion:
             self.screen.fill((230, 230, 230))
 
             self.screen.blit(self.bg, (0, 0))
+            self.ship.draw()
             pygame.display.flip()
             self.clock.tick(self.settings.FPS)
 
