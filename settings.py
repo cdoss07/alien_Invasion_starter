@@ -11,3 +11,10 @@ class Settings:
         self.ship_width =40
         self.ship_height = 60
         self.ship_speed = 5
+
+        self.bullet = Path.cwd()/'Assets'/'images'/'laserBlast.png'
+        self.lasersound = Path.cwd()/'Assets'/'sound'/'laser.mp3'
+        self.bullet_speed = 7
+        self.bullet_width = 25
+        self.bullet_height = 80
+        self.bullet_amount = 5
