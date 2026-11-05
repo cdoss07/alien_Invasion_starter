@@ -4,12 +4,15 @@ from settings import Settings
 from ship import Ship
 from arsenal import Arsenal
 from alien_fleet import AlienFleet
+from stats import GameStats
+from time import sleep
 
 class AlienInvasion:
 
     def __init__(self):
         pygame.init()
         self.settings = Settings()
+        self.stats = GameStats(self.settings.ship_start_amount)
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption(self.settings.name)
 
@@ -23,6 +26,7 @@ class AlienInvasion:
         self.ship = Ship(self, self.arsenal)
         self.alien_fleet = AlienFleet(self)
         self.alien_fleet.create_fleet()
+        self.game_active = True
         
         pygame.mixer.init()
         self.laser_sound = pygame.mixer.Sound(self.settings.lasersound)
@@ -34,19 +38,20 @@ class AlienInvasion:
         while True:
             self._check_events()
             self.screen.fill((230, 230, 230))
-            self.ship.update()
-            self.alien_fleet.update_fleet()
-            self._check_collisions()
+            if self.game_active:
+                self.ship.update()
+                self.alien_fleet.update_fleet()
+                self._check_collisions()
             self._update_screen()
             self.clock.tick(self.settings.FPS)
 
     def _check_collisions(self):
         if self.ship.check_collisions(self.alien_fleet.fleet):
-            self.reset_level()
+            self.check_game_status()
 
 
         if self.alien_fleet.check_fleet_bottom():
-            self.reset_level()
+            self.check_game_status()
 
         collisions = self.alien_fleet.check_collisions(self.ship.arsenal.arsenal)
         if collisions:
@@ -58,7 +63,16 @@ class AlienInvasion:
             self.reset_level()
 
     def check_game_status(self):
-        
+        if self.stats.ship_limit > 0:
+            self.stats.ship_limit -= 1
+            self.reset_level()
+            sleep(0.5)
+        else:
+            self.game_active = False
+
+
+        print(self.stats.ship_limit)
+
 
     def reset_level(self):
         self.ship.arsenal.arsenal.empty()
