@@ -13,6 +13,7 @@ class Button:
         self.font = pygame.Font(self.settings.font_file, self.settings.button_font_size)
         self.rect = pygame.Rect(0, 0, self.settings.button_width, self.settings.button_height)
         self.rect.center = self.boundaries.center
+        self.prep_msg(msg)
 
     def prep_msg(self, msg):
         self.msg_image = self.font.render(msg, True, self.settings.text_color, None)
