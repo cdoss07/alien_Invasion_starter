@@ -40,6 +40,7 @@ class Settings:
         self.fleet_drop = 40
         self.bullet_width = 25
         self.bullet_height = 80
+        self.alien_points = 50
 
 
     def increase_diff(self):
