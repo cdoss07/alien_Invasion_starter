@@ -6,27 +6,19 @@ class Settings:
         self.screen_height = 800   
         self.FPS = 60
         self.bg_file = Path.cwd()/'Assets'/'images'/'Starbasesnow.png'
+        self.diff_scale = 1.1
 
         self.ship = Path.cwd()/'Assets'/'images'/'ship2(no bg).png'
         self.ship_width =40
-        self.ship_height = 60
-        self.ship_speed = 5
-        self.ship_start_amount = 3
-
+        self.ship_height = 60   
         self.bullet = Path.cwd()/'Assets'/'images'/'laserBlast.png'
         self.lasersound = Path.cwd()/'Assets'/'sound'/'laser.mp3'
         self.impact_sound = Path.cwd()/'Assets'/'sound'/'impactSound.mp3'
-        self.bullet_speed = 13
-        self.bullet_width = 25
-        self.bullet_height = 80
-        self.bullet_amount = 5
 
         self.alien = Path.cwd()/'Assets'/'images'/'enemy_4.png'
         self.alien_width = 40
         self.alien_height = 40
-        self.fleet_speed = 3
         self.fleet_direction = 1
-        self.fleet_drop = 40
 
         self.button_width = 200
         self.button_height = 50
@@ -36,3 +28,21 @@ class Settings:
         self.button_font_size = 48
         self.HUD_font_size = 20
         self.font_file = Path.cwd()/'Assets'/'Fonts'/'Silkscreen'/'Silkscreen-Bold.ttf'
+
+
+
+    def dynamic_settings(self):
+        self.ship_speed = 5
+        self.ship_start_amount = 3
+        self.bullet_speed = 15
+        self.bullet_amount = 5
+        self.fleet_speed = 3
+        self.fleet_drop = 40
+        self.bullet_width = 25
+        self.bullet_height = 80
+
+
+    def increase_diff(self):
+        self.ship_speed *= self.diff_scale
+        self.bullet_speed *= self.diff_scale
+        self.fleet_speed *= self.diff_scale
