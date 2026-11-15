@@ -65,6 +65,7 @@ class AlienInvasion:
 
         if self.alien_fleet.check_destroy():
             self.reset_level()
+            self.settings.increase_diff()
 
     def check_game_status(self):
         if self.stats.ship_limit > 0:
@@ -84,6 +85,7 @@ class AlienInvasion:
         self.alien_fleet.create_fleet()
 
     def restart_game(self):
+        self.settings.dynamic_settings()
         self.reset_level()
         self.ship.center_ship()
         self.game_active = True
