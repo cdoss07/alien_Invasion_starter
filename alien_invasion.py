@@ -69,6 +69,7 @@ class AlienInvasion:
             self.reset_level()
             self.settings.increase_diff()
             self.stats.update_level()
+            self.HUD.update_level()
 
     def check_game_status(self):
         if self.stats.ships_left > 0:
