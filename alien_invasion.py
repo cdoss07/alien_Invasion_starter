@@ -7,21 +7,21 @@ from alien_fleet import AlienFleet
 from stats import GameStats
 from time import sleep
 from button import Button
+from HUD import HUD
 
 class AlienInvasion:
 
     def __init__(self):
         pygame.init()
         self.settings = Settings()
-        self.settings.dynamic_settings()
-        self.stats = GameStats(self)
+        self.settings.dynamic_settings()  
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption(self.settings.name)
 
         self.bg = pygame.image.load(self.settings.bg_file)
         self.bg = pygame.transform.scale(self.bg, (self.settings.screen_width, self.settings.screen_height))
-
-
+        self.stats = GameStats(self)
+        self.HUD = HUD(self)
         self.clock = pygame.time.Clock()
 
         self.arsenal = Arsenal(self)
@@ -62,6 +62,7 @@ class AlienInvasion:
             self.impact_sound.play()
             self.impact_sound .fadeout(500)
             self.stats.update(collisions)
+            self.HUD.update_scores()
 
 
         if self.alien_fleet.check_destroy():
@@ -70,15 +71,15 @@ class AlienInvasion:
             self.stats.update_level()
 
     def check_game_status(self):
-        if self.stats.ship_limit > 0:
-            self.stats.ship_limit -= 1
+        if self.stats.ships_left > 0:
+            self.stats.ships_left -= 1
             self.reset_level()
             sleep(0.5)
         else:
             self.game_active = False
 
 
-        print(self.stats.ship_limit)
+        print(self.stats.ships_left)
 
 
     def reset_level(self):
@@ -89,6 +90,7 @@ class AlienInvasion:
     def restart_game(self):
         self.settings.dynamic_settings()
         self.stats.reset_stats()
+        self.HUD.update_scores()
         self.reset_level()
         self.ship.center_ship()
         self.game_active = True
@@ -98,6 +100,7 @@ class AlienInvasion:
         self.screen.blit(self.bg, (0, 0))
         self.ship.draw()
         self.alien_fleet.draw()
+        self.HUD.draw()
 
         if not self.game_active:
             self.play_button.draw()
@@ -109,6 +112,7 @@ class AlienInvasion:
     def _check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.stats.save_scores()
                 sys.exit()
             elif event.type == pygame.KEYDOWN and self.game_active == True:
                self._check_keydown_events(event)
@@ -139,6 +143,7 @@ class AlienInvasion:
             self.ship.moving_left = False
         elif event.key == pygame.K_q:
             self.running = False
+            self.stats.save_scores()
             pygame.quit()
             sys.exit()
 

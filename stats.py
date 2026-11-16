@@ -15,7 +15,7 @@ class GameStats():
 
     def saved_score(self):
         self.path = self.settings.scores_file
-        if self.path.exists() and self.path.stat.__sizeof__() > 80:
+        if self.path.exists() and self.path.stat.__sizeof__() > 20:
             contents = self.path.read_text()
             scores = json.loads(contents)
             self.hi_score = scores.get('hi_score', 0)
@@ -41,7 +41,7 @@ class GameStats():
     def update(self, collisions):
         self.update_score(collisions)
         self.update_max_score()
-        self.update_hi_score
+        self.update_hi_score()
 
     def update_max_score(self):
         if self.score > self.max_score:
