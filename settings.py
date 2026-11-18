@@ -16,6 +16,9 @@ class Settings:
         self.lasersound = Path.cwd()/'Assets'/'sound'/'laser.mp3'
         self.impact_sound = Path.cwd()/'Assets'/'sound'/'impactSound.mp3'
 
+        self.spread_cooldown = 10000
+        self.spread_x_speed = 3.0
+
         self.alien = Path.cwd()/'Assets'/'images'/'enemy_4.png'
         self.alien_width = 40
         self.alien_height = 40
@@ -36,9 +39,9 @@ class Settings:
         self.ship_speed = 5
         self.ship_start_amount = 3
         self.bullet_speed = 15
-        self.bullet_amount = 5
+        self.bullet_amount = 9
         self.fleet_speed = 3
-        self.fleet_drop = 40
+        self.fleet_drop = 10
         self.bullet_width = 25
         self.bullet_height = 80
         self.alien_points = 50

@@ -132,6 +132,10 @@ class AlienInvasion:
                 self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
                 self.ship.moving_left = True
+        elif event.key == pygame.K_x:
+            self.arsenal.set_fire_mode(1)
+        elif event.key == pygame.K_c:
+            self.arsenal.set_fire_mode(3)
         elif event.key == pygame.K_SPACE:
                 if self.ship.fire():
                     self.laser_sound.play()

@@ -5,7 +5,7 @@ if TYPE_CHECKING:
     from alien_invasion import AlienInvasion
 
 class Bullet(Sprite):
-    def __init__(self, game: 'AlienInvasion', ship: 'Ship') -> None:
+    def __init__(self, game: 'AlienInvasion', ship: 'Ship', x_speed: float = 0.0) -> None:
         super().__init__()
         self.screen = game.screen
         self.settings = game.settings
@@ -17,10 +17,14 @@ class Bullet(Sprite):
         self.rect = self.image.get_rect()
         self.rect.midtop = ship.rect.midtop
         self.y = float(self.rect.y)
+        self.x = float(self.rect.x)
+        self.x_speed = x_speed
 
     def update(self) -> None:
         self.y -= self.settings.bullet_speed
+        self.x += self.x_speed
         self.rect.y = self.y
+        self.rect.x = self.x
 
     def draw_bullet(self) -> None:
         self.screen.blit(self.image, self.rect)
