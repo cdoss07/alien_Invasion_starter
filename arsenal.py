@@ -12,7 +12,9 @@ class Arsenal:
         self.arsenal = pygame.sprite.Group()
 
         self.fire_mode = 1
-        self.last_spread_time = -self.settings.spread_cooldown
+        self.spread_shots_remaining = self.settings.spread_max_shots
+        self.cooldown = False
+        self.cooldown_start_time = 0
 
     def set_fire_mode(self, mode: int):
         if mode in (1, 3):
@@ -26,17 +28,23 @@ class Arsenal:
     def fire_bullet(self):
         current_time = pygame.time.get_ticks()
         if self.fire_mode == 3:
-            time_used = current_time - self.last_spread_time
-            if time_used >= self.settings.spread_cooldown and len(self.arsenal) + 3 <= self.settings.bullet_amount:
-                for x_vel in (-self.settings.spread_x_speed, 0.0, self.settings.spread_x_speed):
-                    new_bullet = Bullet(self.game, self.game.ship, x_speed = x_vel)
-                    self.arsenal.add(new_bullet)
-                self.last_spread_time = current_time
-                return True
-            elif time_used < self.settings.spread_cooldown:
-                remaining = (self.settings.spread_cooldown - time_used) / 1000.0
+            if not self.cooldown and self.spread_shots_remaining > 0:
+                if len(self.arsenal) + 3 <= self.settings.bullet_amount:
+                    for x_vel in (-self.settings.spread_x_speed, 0.0, self.settings.spread_x_speed):
+                        new_bullet = Bullet(self.game, self.game.ship, x_speed = x_vel)
+                        self.arsenal.add(new_bullet)
 
-        if len(self.arsenal) < self.settings.bullet_amount:
+                    self.spread_shots_remaining -= 1
+
+                    if self.spread_shots_remaining == 0:
+                        self.cooldown = True
+                        self.cooldown_start_time = current_time
+
+                    return True
+            else:
+                remaining_time = max(0.0, (self.settings.spread_cooldown - (current_time - self.cooldown_start_time)) / 1000.0)
+
+        if len(self.arsenal) < self.settings.single_fire_bullet_amount:
             new_bullet = Bullet(self.game, self.game.ship, x_speed = 0.0)
             self.arsenal.add(new_bullet)
             return True
@@ -45,6 +53,12 @@ class Arsenal:
     def update_arsenal(self) -> None:
         self.arsenal.update()
         self.remove_bullet_off_screen()
+
+        if self.cooldown:
+            time_used = pygame.time.get_ticks() - self.cooldown_start_time
+            if time_used >= self.settings.spread_cooldown:
+                self.cooldown = False
+                self.spread_shots_remaining = self.settings.spread_max_shots
 
     def draw_arsenal(self) -> None:
         for bullet in self.arsenal:
