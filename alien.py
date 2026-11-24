@@ -35,6 +35,10 @@ class Alien(Sprite):
         red_alien.fill((255, 60, 60, 255), special_flags = pygame.BLEND_RGBA_MULT)
         self.image = red_alien
 
+    def damge(self, amount: int = 1):
+        self.health -= amount
+        return self.health <= 0
+
     def update(self) -> None:
         temp_speed = self.settings.fleet_speed
 
