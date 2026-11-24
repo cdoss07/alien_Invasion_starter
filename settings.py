@@ -48,9 +48,12 @@ class Settings:
         self.spread_cooldown = 5000
         self.spread_x_speed = 3.0
         self.spread_max_shots = 5
+        self.armored_alien_health = 3
+        self.weak_alien_health = 1
 
 
     def increase_diff(self):
         self.ship_speed *= self.diff_scale
         self.bullet_speed *= self.diff_scale
         self.fleet_speed *= self.diff_scale
+        self.armored_alien_health *= self.diff_scale
