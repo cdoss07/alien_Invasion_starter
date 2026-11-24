@@ -36,8 +36,7 @@ class AlienFleet:
                     continue
                 current_x = alien_width * col + x_offset
                 current_y = alien_heigt * row + y_offset
-                self._create_alien(current_x, current_y)
-                spawn_pos.append(current_x,current_y)
+                spawn_pos.append((current_x,current_y))
 
         armored_count = min(8, len(spawn_pos))
         armored_pos = set(random.sample(spawn_pos, armored_count))
@@ -70,8 +69,8 @@ class AlienFleet:
 
         return int(fleet_width), int(fleet_height)
 
-    def _create_alien(self, current_x: int, current_y: int):
-        new_alien = Alien(self, current_x, current_y)
+    def _create_alien(self, current_x: int, current_y: int, alien_type: str = 'weak'):
+        new_alien = Alien(self, current_x, current_y, alien_type = alien_type)
 
         self.fleet.add(new_alien)
 
@@ -98,7 +97,14 @@ class AlienFleet:
 
 
     def check_collisions(self, other_group):
-        return pygame.sprite.groupcollide(self.fleet, other_group, True, True)
+        hit = pygame.sprite.groupcollide(self.fleet, other_group, False, True)
+        alien_killed = {}
+
+        for alien, hit_bullets in hit.items():
+            if alien.damage(len(hit_bullets)):
+                alien.kill()
+                alien_killed[alien] = hit_bullets
+        return alien_killed
 
 
     def check_fleet_bottom(self):
