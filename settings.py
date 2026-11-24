@@ -41,7 +41,7 @@ class Settings:
         self.bullet_amount = 15
         self.single_fire_bullet_amount = 5
         self.fleet_speed = 3
-        self.fleet_drop = 40
+        self.fleet_drop = 35
         self.bullet_width = 25
         self.bullet_height = 80
         self.alien_points = 50

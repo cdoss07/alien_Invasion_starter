@@ -101,7 +101,7 @@ class AlienFleet:
         alien_killed = {}
 
         for alien, hit_bullets in hit.items():
-            if alien.damage(len(hit_bullets)):
+            if alien.damge(len(hit_bullets)):
                 alien.kill()
                 alien_killed[alien] = hit_bullets
         return alien_killed
